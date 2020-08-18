@@ -8,4 +8,4 @@
 	email = 44131908+pathirissery@users.noreply.github.com
 [core]
 	editor = vim
-	excludesfile = /Users/insignificant/.gitignore_global
+	excludesfile = ~/.gitignore_global
