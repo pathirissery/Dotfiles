@@ -1,0 +1,11 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+	name = pathirissery
+	email = 44131908+pathirissery@users.noreply.github.com
+[core]
+	editor = vim
+	excludesfile = /Users/insignificant/.gitignore_global
