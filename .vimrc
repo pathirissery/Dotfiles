@@ -4,18 +4,30 @@ autocmd! bufwritepost .vimrc source %
 call plug#begin('~/.vim/plugged')
 
 "Basic Setup
-Plug 'https://github.com/dense-analysis/ale.git'
+Plug 'https://github.com/dense-analysis/ale.git' "linter
+"Plug 'https://github.com/SirVer/ultisnips.git' "snippets
+Plug 'https://github.com/machakann/vim-highlightedyank.git' "Highlights yanks
+Plug 'https://github.com/ycm-core/YouCompleteMe.git' "might have to recompile occassionally. Need extra options to add support for some languages.
+"Consider vim-sandwhich or vim-surroud for delimiters
+
+"LaTeX files
+Plug 'https://github.com/lervag/vimtex'
+
+"For writing and markdown
+Plug 'https://github.com/junegunn/goyo.vim.git' "Use :Goyo
+Plug 'https://github.com/junegunn/limelight.vim.git' "Use :Limelight and :Limelight!
+
+"Stuff from before that needs to be given a once over.
 Plug 'https://github.com/junegunn/fzf.vim.git' "ytfo
 Plug 'https://github.com/majutsushi/tagbar.git'
 Plug 'https://github.com/preservim/nerdtree.git'
 Plug 'https://github.com/sheerun/vim-polyglot.git'
-Plug 'https://github.com/ycm-core/YouCompleteMe.git'
+"Plug 'https://github.com/ycm-core/YouCompleteMe.git'
 Plug 'https://github.com/ervandew/supertab.git'
 "Plug 'https://github.com/vim-airline/vim-airline.git'
 
 "Coding Niceties
 Plug 'https://github.com/junegunn/rainbow_parentheses.vim.git' "Use :RainbowParentheses
-Plug 'https://github.com/machakann/vim-highlightedyank.git' "Highlights yanks
 Plug 'https://github.com/tpope/vim-surround.git'
 Plug 'https://github.com/tmhedberg/SimpylFold.git'
 Plug 'https://github.com/Konfekt/FastFold.git'
@@ -26,14 +38,17 @@ Plug 'https://github.com/joshdick/onedark.vim.git'
 Plug 'https://github.com/sheerun/vim-wombat-scheme.git'
 Plug 'https://github.com/vim-airline/vim-airline-themes.git'
 
-"For writing and markdown
-Plug 'https://github.com/junegunn/goyo.vim.git' "Use :Goyo
-Plug 'https://github.com/junegunn/limelight.vim.git' "Use :Limelight
-
 "Plug 'vim-scripts/AutoComplPop'
 "Plug 'https://github.com/powerline/powerline.git' "ytfo
 
 call plug#end()
+
+set encoding=utf-8 "just in case
+set clipboard=unnamed
+"Cursor Settings
+let &t_SI.="\e[5 q" "SI = INSERT mode
+let &t_SR.="\e[4 q" "SR = REPLACE mode
+let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 
 "Powerline
 "set rtp+=/Users/insignificant/.pyenv/versions/3.8.3/Python.framework/Versions/3.8/lib/python3.8/site-packages/powerline/bindings/vim
@@ -42,19 +57,23 @@ python3 powerline_setup()
 python3 del powerline_setup
 set laststatus=2
 
+"Vimtex Settings
+let g:tex_flavor='latex'
+let g:vimtex_view_method = 'skim'
+if !exists('g:ycm_semantic_triggers')
+    let g:ycm_semantic_triggers = {}
+endif
+au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
+
 " Show whitespace
 " MUST be inserted BEFORE the colorscheme command
 autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 au InsertLeave * match ExtraWhitespace /\s\+$/
-
-
-"options are wombat or onedark
 colorscheme wombat
-let g:airline_theme='wombat'
 
-set encoding=utf-8 "just in case
-set clipboard=unnamed
-
+"integrates Goyo and Limelight
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
 
 "Setting NERDTreeToggle and Tagbar to ctrl+N and ctrl+M respectively
 nmap <C-n> :NERDTreeToggle<CR>
@@ -64,9 +83,11 @@ autocmd VimEnter * RainbowParentheses
 " Enable syntax highlighting
 " You need to reload this file for the change to apply
 filetype off
-filetype plugin indent on
+filetype plugin on
+filetype indent on
 syntax on
 
+"Need to check stuff below this!!!
 
 "Folding toggle with space
 nnoremap <space> zA
@@ -74,8 +95,9 @@ set nofoldenable
 
 
 " Showing line numbers and length
-set number  " show line numbers
-set tw=79   " width of document (used by gd)
+set number "show line numbers
+set relativenumber  " show relative line numbers
+" set tw=79   " width of document (used by gd)
 "" set nowrap  " don't automatically wrap on load
 "" set fo-=t   " don't automatically wrap text when typing
 set colorcolumn=80
