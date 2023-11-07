@@ -3,59 +3,80 @@ autocmd! bufwritepost .vimrc source %
 
 call plug#begin('~/.vim/plugged')
 
-"Basic Setup
-Plug 'https://github.com/dense-analysis/ale.git' "linter
-"Plug 'https://github.com/SirVer/ultisnips.git' "snippets
-Plug 'https://github.com/machakann/vim-highlightedyank.git' "Highlights yanks
-Plug 'https://github.com/ycm-core/YouCompleteMe.git' "might have to recompile occassionally. Need extra options to add support for some languages.
-"Consider vim-sandwhich or vim-surroud for delimiters
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-"LaTeX files
-Plug 'https://github.com/lervag/vimtex'
+"The powerful stuff
+Plug 'dense-analysis/ale' "Linter
+Plug 'SirVer/ultisnips' "Snippets Engine
+Plug 'honza/vim-snippets' "Snippets
+Plug 'ycm-core/YouCompleteMe' "Completion
+Plug 'machakann/vim-sandwich' "Delimiters
+Plug 'lervag/vimtex' "LaTeX plugin
+Plug 'rust-lang/rust' "Rust plugin
+
+"General Niceties
+Plug 'junegunn/rainbow_parentheses.vim' "Use :RainbowParentheses
+Plug 'machakann/vim-highlightedyank' "Highlights yanks
+Plug 'sheerun/vim-wombat-scheme' "Wombat colorscheme
+Plug 'preservim/nerdtree' "toggle mapped to ctrl + n
+Plug 'junegunn/fzf' "fuzzy find
+Plug 'junegunn/fzf.vim' "fuzzy find defaults
 
 "For writing and markdown
-Plug 'https://github.com/junegunn/goyo.vim.git' "Use :Goyo
-Plug 'https://github.com/junegunn/limelight.vim.git' "Use :Limelight and :Limelight!
+Plug 'junegunn/goyo.vim' "Use :Goyo
+Plug 'junegunn/limelight.vim' "Use :Limelight and :Limelight!
 
 "Stuff from before that needs to be given a once over.
-Plug 'https://github.com/junegunn/fzf.vim.git' "ytfo
-Plug 'https://github.com/majutsushi/tagbar.git'
-Plug 'https://github.com/preservim/nerdtree.git'
-Plug 'https://github.com/sheerun/vim-polyglot.git'
-"Plug 'https://github.com/ycm-core/YouCompleteMe.git'
-Plug 'https://github.com/ervandew/supertab.git'
-"Plug 'https://github.com/vim-airline/vim-airline.git'
-
-"Coding Niceties
-Plug 'https://github.com/junegunn/rainbow_parentheses.vim.git' "Use :RainbowParentheses
-Plug 'https://github.com/tpope/vim-surround.git'
-Plug 'https://github.com/tmhedberg/SimpylFold.git'
-Plug 'https://github.com/Konfekt/FastFold.git'
-Plug 'https://github.com/preservim/nerdcommenter.git'
-
-"Colorschemes
-Plug 'https://github.com/joshdick/onedark.vim.git'
-Plug 'https://github.com/sheerun/vim-wombat-scheme.git'
-Plug 'https://github.com/vim-airline/vim-airline-themes.git'
-
-"Plug 'vim-scripts/AutoComplPop'
-"Plug 'https://github.com/powerline/powerline.git' "ytfo
+"Plug 'https://github.com/junegunn/fzf.vim.git'
+"Plug 'https://github.com/majutsushi/tagbar.git'
+"Plug 'https://github.com/sheerun/vim-polyglot.git'
+"Plug 'https://github.com/ervandew/supertab.git'
+"Plug 'https://github.com/tmhedberg/SimpylFold.git'
+"Plug 'https://github.com/Konfekt/FastFold.git'
+"Plug 'https://github.com/preservim/nerdcommenter.git'
 
 call plug#end()
 
-set encoding=utf-8 "just in case
+set encoding=utf-8
 set clipboard=unnamed
 "Cursor Settings
 let &t_SI.="\e[5 q" "SI = INSERT mode
 let &t_SR.="\e[4 q" "SR = REPLACE mode
 let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+au InsertLeave * match ExtraWhitespace /\s\+$/
+colorscheme wombat
+set number "show line numbers
+set relativenumber  " show relative line numbers
+" Enable syntax highlighting
+" You need to reload this file for the change to apply
+filetype off
+filetype plugin on
+filetype indent on
+syntax on
+set colorcolumn=80
+highlight ColorColumn ctermbg=233 "set colorcolumn color.
+set mouse=a  " on OSX press ALT and click
+set bs=2     " make backspace behave like normal again
+:nnoremap <F5> :w<CR>
+set wildmenu
+autocmd BufWritePre * :%s/\s\+$//e "Deletes trialing white spaces before saving.
 
-"Powerline
-"set rtp+=/Users/insignificant/.pyenv/versions/3.8.3/Python.framework/Versions/3.8/lib/python3.8/site-packages/powerline/bindings/vim
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
-set laststatus=2
+
+let g:airline_theme='wombat'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
+"if !exists('g:airline_symbols')
+"    let g:airline_symbols = {}
+"endif
+
+"Powerline Startup - using airline now.
+"python3 from powerline.vim import setup as powerline_setup
+"python3 powerline_setup()
+"python3 del powerline_setup
+"set laststatus=2
 
 "Vimtex Settings
 let g:tex_flavor='latex'
@@ -65,48 +86,35 @@ if !exists('g:ycm_semantic_triggers')
 endif
 au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
 
-" Show whitespace
-" MUST be inserted BEFORE the colorscheme command
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-au InsertLeave * match ExtraWhitespace /\s\+$/
-colorscheme wombat
-
 "integrates Goyo and Limelight
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 
-"Setting NERDTreeToggle and Tagbar to ctrl+N and ctrl+M respectively
-nmap <C-n> :NERDTreeToggle<CR>
-nmap <C-m> :TagbarToggle<CR>
-autocmd VimEnter * RainbowParentheses
-
-" Enable syntax highlighting
-" You need to reload this file for the change to apply
-filetype off
-filetype plugin on
-filetype indent on
-syntax on
+"Trigger configuration. Do not use <tab> if you use YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<F5>"
+let g:UltiSnipsListSnippets="<S-F6>"
+let g:UltiSnipsJumpForwardTrigger="<F6>"
+let g:UltiSnipsJumpBackwardTrigger="<S-F6>"
+let g:UltiSnipsEditSplit='vertical'
 
 "Need to check stuff below this!!!
 
+"Setting NERDTreeToggle and Tagbar to ctrl+N and ctrl+M respectively
+nmap <C-n> :NERDTreeToggle<CR>
+"nmap <C-m> :TagbarToggle<CR>
+autocmd VimEnter * RainbowParentheses
+
 "Folding toggle with space
-nnoremap <space> zA
-set nofoldenable
+"nnoremap <space> zA
+"set nofoldenable
 
 
 " Showing line numbers and length
-set number "show line numbers
-set relativenumber  " show relative line numbers
-" set tw=79   " width of document (used by gd)
+"" set tw=79   " width of document (used by gd)
 "" set nowrap  " don't automatically wrap on load
 "" set fo-=t   " don't automatically wrap text when typing
-set colorcolumn=80
-highlight ColorColumn ctermbg=233
-
 
 " Mouse and backspace
-set mouse=a  " on OSX press ALT and click
-"" set bs=2     " make backspace behave like normal again
 
 
 " Rebind <Leader> key
@@ -135,8 +143,8 @@ vnoremap <Leader>s :sort<CR>
 " easier moving of code blocks
 " Try to go into visual mode (v), thenselect several lines of code here and
 " then press ``>`` several times.
-vnoremap < <gv  " better indentation
-vnoremap > >gv  " better indentation
+vnoremap < <gv  "better indentation
+vnoremap > >gv  "better indentation
 
 
 " Useful settings
@@ -157,39 +165,3 @@ set expandtab
 "set incsearch
 "set ignorecase
 "set smartcase
-
-
-" Settings for ctrlp
-" cd ~/.vim/bundle
-" git clone https://github.com/kien/ctrlp.vim.git
-" let g:ctrlp_max_height = 30
-" set wildignore+=*.pyc
-" set wildignore+=*_build/*
-" set wildignore+=*/coverage/*
-
-
-
-" Settings for jedi-vim
-" cd ~/.vim/bundle
-" git clone git://github.com/davidhalter/jedi-vim.git
-"" let g:jedi#usages_command = "<leader>z"
-"" let g:jedi#popup_on_dot = 0
-"" let g:jedi#popup_select_first = 0
-"" map <Leader>b Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
-
-" Better navigating through omnicomplete option list
-" See http://stackoverflow.com/questions/2170023/how-to-map-keys-for-popup-menu-in-vim
-"" set completeopt=longest,menuone
-"" function! OmniPopup(action)
-""     if pumvisible()
-""         if a:action == 'j'
-""             return "\<C-N>"
-""         elseif a:action == 'k'
-""             return "\<C-P>"
-""         endif
-""     endif
-""     return a:action
-"" endfunction
-
-"" inoremap <silent><C-j> <C-R>=OmniPopup('j')<CR>
-"" inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>

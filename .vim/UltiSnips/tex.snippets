@@ -1,0 +1,185 @@
+snippet b "description"
+\begin{$1}
+	$2
+\end{$1}
+endsnippet
+
+snippet b[ "description"
+\begin{$1}[$2]
+	$3
+\end{$1}
+endsnippet
+
+snippet b{ "description"
+\begin{$1}{$2}
+	$3
+\end{$1}
+endsnippet
+
+snippet fig "attach figure" b
+\begin{figure}[h!]
+\includegraphics[width=0.5\textwidth]{$1}
+\centering
+\caption{$2}
+\label{$3}
+\end{figure}
+endsnippet
+
+snippet amsart "LaTeX AMS Art Template" b
+\documentclass[11pt]{amsart}
+
+\usepackage{booktabs} %improves tables
+\usepackage{mathtools} %loads amsmath and some other stuff
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate} %gives options for enumerate
+\usepackage{bookmark}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage{fullpage}
+
+\usepackage[a4paper, margin=0.5in]{geometry}
+\setlength{\parindent}{0pt}
+\pagenumbering{gobble}
+
+%environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{question}[theorem]{Question}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{definitions}[theorem]{Definitions}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem*{example}{Example}
+\newtheorem{examples}[theorem]{Examples}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{notations}[theorem]{Notations}
+\newtheorem{addendum}[theorem]{Addendum}
+\newtheorem{exercise}[theorem]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem{remarks}[theorem]{Remarks}
+\newtheorem{warning}[theorem]{Warning}
+\newtheorem{scholium}[theorem]{Scholium}
+
+\title{${1:AMS Art}}
+\author{Adit Vishnu}
+
+\begin{document}
+
+%\begin{abstract}
+%\end{abstract}
+
+\maketitle
+
+${2:Lorem Ipsum}
+
+
+%\nocite{*}
+%\bibliographystyle{unsrt}
+%\bibliographystyle{plain}
+%\bibliography{references}  %%% Remove comment to use the external .bib file (using bibtex).
+
+\end{document}
+endsnippet
+
+snippet beamer "LaTeX Beamer Template" b
+% !TEX TS-program = lualatex
+\documentclass[10pt]{beamer}
+\usetheme[progressbar=frametitle, titleformat=smallcaps]{metropolis}
+\usefonttheme[onlymath]{serif}
+\usecolortheme{midnight}
+\def\titlepage{\usebeamertemplate{title page}} %prevent overfull vbox in title page.
+\setbeamertemplate{frame footer}{\insertshortauthor~(\insertshortinstitute)} %frame footer with name and institution
+\usepackage{framed} %framed and shaded environments
+\usepackage{booktabs} %improves tables
+\usepackage{mathtools} %loads amsmath and some other stuff
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fontspec} %fonts for LuLaTeX
+\usepackage{enumerate} %gives options for enumerate
+\usepackage[style=authortitle]{biblatex}
+\usepackage{appendixnumberbeamer} %call \appendix before appendix slides
+\usepackage{bookmark}
+
+\bibliography{refs.bib}
+\metroset{block=fill}
+
+\title{${1:Metropolis}}
+\author{Adit Vishnu}
+\date{\today}
+\institute{Indian Institute of Science}
+
+\begin{document}
+\maketitle
+
+\begin{frame}{${2:Title}}
+    ${3:Lorem Ipsum}
+\end{frame}
+
+\end{document}
+endsnippet
+
+snippet neurips "NeurIPS 2020 Template" b
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+
+% ready for submission
+% \usepackage{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+\usepackage[preprint]{neurips_2020}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\title{${1:Title}}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{%
+  Adit Vishnu\\Indian Institute of Science, Bangalore  % examples of more authors
+}
+
+\begin{document}
+
+\maketitle
+${2:Lore Ipsum}
+\end{document}
+endsnippet
